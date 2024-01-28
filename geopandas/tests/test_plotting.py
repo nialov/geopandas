@@ -175,7 +175,8 @@ class TestPointPlotting:
         with pytest.raises((ValueError, TypeError)):
             self.df.plot(color="not color")
 
-        with warnings.catch_warnings(record=True) as _:  # don't print warning
+        with pytest.warns(UserWarning, match="Only specify one of 'column' or 'color'"):
+            # with warnings.catch_warnings(record=True) as _:  # don't print warning
             # 'color' overrides 'column'
             ax = self.df.plot(column="values", color="green")
             _check_colors(
@@ -230,7 +231,7 @@ class TestPointPlotting:
         reason="failing with matplotlib dev",
     )
     def test_legend(self):
-        with warnings.catch_warnings(record=True) as _:  # don't print warning
+        with pytest.warns(UserWarning, match="Only specify one of 'column' or 'color'"):
             # legend ignored if color is given.
             ax = self.df.plot(column="values", color="green", legend=True)
             assert len(ax.get_figure().axes) == 1  # no separate legend axis

@@ -613,21 +613,22 @@ def test_read_file_local_uri(file_path, engine):
 
 
 def test_read_file_textio(file_path, engine):
-    file_text_stream = open(file_path)
-    file_stringio = io.StringIO(open(file_path).read())
-    gdf_text_stream = read_file(file_text_stream, engine=engine)
-    gdf_stringio = read_file(file_stringio, engine=engine)
-    assert isinstance(gdf_text_stream, geopandas.GeoDataFrame)
-    assert isinstance(gdf_stringio, geopandas.GeoDataFrame)
+    with open(file_path) as file_text_stream:
+        with io.StringIO(pathlib.Path(file_path).read_text()) as file_stringio:
+            # file_stringio = io.StringIO(file_text_stream_2.read())
+            gdf_text_stream = read_file(file_text_stream, engine=engine)
+            gdf_stringio = read_file(file_stringio, engine=engine)
+            assert isinstance(gdf_text_stream, geopandas.GeoDataFrame)
+            assert isinstance(gdf_stringio, geopandas.GeoDataFrame)
 
 
 def test_read_file_bytesio(file_path, engine):
-    file_binary_stream = open(file_path, "rb")
-    file_bytesio = io.BytesIO(open(file_path, "rb").read())
-    gdf_binary_stream = read_file(file_binary_stream, engine=engine)
-    gdf_bytesio = read_file(file_bytesio, engine=engine)
-    assert isinstance(gdf_binary_stream, geopandas.GeoDataFrame)
-    assert isinstance(gdf_bytesio, geopandas.GeoDataFrame)
+    with open(file_path, "rb") as file_binary_stream:
+        with io.BytesIO(pathlib.Path(file_path).read_bytes()) as file_bytesio:
+            gdf_binary_stream = read_file(file_binary_stream, engine=engine)
+            gdf_bytesio = read_file(file_bytesio, engine=engine)
+            assert isinstance(gdf_binary_stream, geopandas.GeoDataFrame)
+            assert isinstance(gdf_bytesio, geopandas.GeoDataFrame)
 
 
 def test_read_file_raw_stream(file_path, engine):

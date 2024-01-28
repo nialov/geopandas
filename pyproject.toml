@@ -62,6 +62,7 @@ markers = ["web: tests that need network connectivity"]
 xfail_strict = true
 
 filterwarnings = [
+    "error",
     "ignore:distutils Version classes are deprecated.*:DeprecationWarning:pandas.*",
     "ignore:distutils Version classes are deprecated.*:DeprecationWarning:numpy.*",
     "ignore:The geopandas.dataset module is deprecated",
@@ -69,6 +70,9 @@ filterwarnings = [
     "ignore:The --rsyncdir command line argument:DeprecationWarning",
     # dateutil incompatibility with python 3.12 (https://github.com/dateutil/dateutil/issues/1284)
     "ignore:datetime.datetime.utcfromtimestamp:DeprecationWarning:dateutil",
+    "ignore::DeprecationWarning",
+    "ignore::pytest.PytestUnraisableExceptionWarning",
+    "ignore:Mismatched null:FutureWarning",
 ]
 
 [tool.black]
